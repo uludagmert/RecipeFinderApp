@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
@@ -24,7 +23,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +33,6 @@ import com.example.recipefinderapp.R
 import com.example.recipefinderapp.detail.model.MealDetail
 import com.example.recipefinderapp.detail.model.getIngredientsAndMeasures
 import com.example.recipefinderapp.detail.viewmodel.DetailViewModel
-import com.example.recipefinderapp.dishes.model.Meal
 import kotlin.math.max
 import kotlin.math.min
 
@@ -105,6 +102,9 @@ fun ParallaxToolbar(meal: MealDetail, scrollState: LazyListState, viewModel: Det
     val offset = min(scrollState.firstVisibleItemScrollOffset, maxOffset)
     val offsetProgress = max(0f, offset * 3f - 2f * maxOffset) / maxOffset
 
+    var isFavorited by remember { mutableStateOf(false) }
+    val favoriteIcon = if (isFavorited) R.drawable.ic_favorite else R.drawable.ic_favorite_unfilled
+
     Box(
         modifier = Modifier
             .height(400.dp)
@@ -169,11 +169,14 @@ fun ParallaxToolbar(meal: MealDetail, scrollState: LazyListState, viewModel: Det
                 .padding(horizontal = 16.dp)
         ) {
             CircularButton(R.drawable.ic_arrow_back) {
-                navController.popBackStack() // Navigate back
+                navController.popBackStack()
             }
             CircularButton(
-                R.drawable.ic_favorite_unfilled,
-                onClick = { viewModel.saveToFavourites(meal) }
+                iconResource = favoriteIcon,
+                onClick = {
+                    isFavorited = !isFavorited
+                    viewModel.saveToFavourites(meal)
+                }
             )
         }
     }
@@ -255,7 +258,7 @@ fun Steps(meal: MealDetail) {
 @Composable
 fun CircularButton(
     @DrawableRes iconResource: Int,
-    color: Color = Color.Gray,
+    color: Color = Color.White,
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     onClick: () -> Unit = {}
 ) {
@@ -263,7 +266,7 @@ fun CircularButton(
         onClick = onClick,
         contentPadding = PaddingValues(),
         shape = RoundedCornerShape(4.dp),
-        colors = ButtonDefaults.buttonColors(contentColor = color, containerColor = Color.White),
+        colors = ButtonDefaults.buttonColors(contentColor = Color.Red, containerColor = color),
         elevation = elevation,
         modifier = Modifier
             .width(38.dp)
