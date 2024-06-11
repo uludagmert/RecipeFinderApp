@@ -10,7 +10,7 @@ import com.example.recipefinderapp.db.DishesDao
 import com.example.recipefinderapp.detail.model.MealDetail
 import com.example.recipefinderapp.detail.model.convertToSmaller
 import com.example.recipefinderapp.detail.usecase.IGetDetailsUseCase
-import com.example.recipefinderapp.dishes.viewmodel.ViewState
+import com.example.recipefinderapp.favorites.repository.FavoritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     val useCase: IGetDetailsUseCase,
-    val dao : DishesDao
+    val dao : DishesDao,
+
+
 ): ViewModel()  {
     private val _meal : MutableState<MealDetail?> = mutableStateOf(null)
     val meal : State<MealDetail?> = _meal
@@ -34,12 +36,12 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
+
+
+
     fun saveToFavourites (mealDetail : MealDetail) {
     viewModelScope.launch {
-
-            dao.saveMeal(mealDetail.convertToSmaller())
-
-
+        dao.saveMeal(mealDetail.convertToSmaller())
     }
     }
 }

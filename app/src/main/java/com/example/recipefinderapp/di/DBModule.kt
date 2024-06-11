@@ -22,7 +22,8 @@ object DBModule {
         RecipeFinderDatabase::class.java,
         "recipe_database"
 
-    ).build()
+    )
+        .fallbackToDestructiveMigration().build()
 
     @Provides
     @Singleton

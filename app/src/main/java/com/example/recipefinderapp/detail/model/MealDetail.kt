@@ -7,11 +7,14 @@ import androidx.room.PrimaryKey
 data class SmallerMeal (
     @PrimaryKey
     val idMeal: String,
-    val title : String
+    val title : String,
+    val strMealThumb: String,
+    val strInstructions: String,
+    val strYoutube: String
 )
 
 fun MealDetail.convertToSmaller() : SmallerMeal{
-    return SmallerMeal(this.idMeal,this.strMeal)
+    return SmallerMeal(this.idMeal,this.strMeal, this.strMealThumb, this.strInstructions, this.strYoutube)
 }
 
 

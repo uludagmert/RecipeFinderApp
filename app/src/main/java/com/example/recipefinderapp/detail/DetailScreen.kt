@@ -1,5 +1,6 @@
 package com.example.recipefinderapp.detail
 
+import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,6 +11,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +27,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +41,7 @@ import com.example.recipefinderapp.R
 import com.example.recipefinderapp.detail.model.MealDetail
 import com.example.recipefinderapp.detail.model.getIngredientsAndMeasures
 import com.example.recipefinderapp.detail.viewmodel.DetailViewModel
+import com.example.recipefinderapp.dishes.model.Meal
 import kotlin.math.max
 import kotlin.math.min
 
@@ -71,6 +80,8 @@ fun InstructionText(instructions: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(
     navController: NavController,
@@ -88,10 +99,12 @@ fun DetailScreen(
     val scrollState = rememberLazyListState()
 
     singleDish?.let {
-        Box {
-            Content(it, scrollState)
-            ParallaxToolbar(it, scrollState, viewModel, navController)
-        }
+
+            Box {
+                Content(it, scrollState)
+                ParallaxToolbar(it, scrollState, viewModel, navController)
+            }
+
     }
 }
 
@@ -223,13 +236,26 @@ fun Content(meal: MealDetail, scrollState: LazyListState) {
 @Composable
 fun Steps(meal: MealDetail) {
     val uriHandler = LocalUriHandler.current
+
+    val annotatedString = buildAnnotatedString {
+        append(meal.strYoutube)
+        addStyle(
+            style = SpanStyle(
+                color = Color.Blue,
+                textDecoration = TextDecoration.Underline
+            ),
+            start = 0,
+            end = meal.strYoutube.length
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         ClickableText(
-            text = AnnotatedString(meal.strYoutube),
+            text = annotatedString,
             onClick = { _ -> uriHandler.openUri(meal.strYoutube) }
         )
         Ingredients(meal)
@@ -249,11 +275,10 @@ fun Steps(meal: MealDetail) {
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-                InstructionText(meal.strInstructions)
+            InstructionText(meal.strInstructions)
         }
     }
 }
-
 
 @Composable
 fun CircularButton(

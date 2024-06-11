@@ -8,7 +8,7 @@ import com.example.recipefinderapp.dishes.model.Meal
 
 @Database(
     entities = [SmallerMeal::class, Category::class, Meal::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract  class RecipeFinderDatabase : RoomDatabase() {
