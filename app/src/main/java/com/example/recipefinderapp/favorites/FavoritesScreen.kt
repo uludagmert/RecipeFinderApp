@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.recipefinderapp.R
 import com.example.recipefinderapp.detail.model.SmallerMeal
 import com.example.recipefinderapp.favorites.viewmodel.FavoritesViewModel
+import com.example.recipefinderapp.ui.theme.MainColor
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,15 +33,10 @@ fun FavoritesScreen(
     val favorites = viewModel.favorites.collectAsState().value
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Favorites") },
-            )
-        },
-        content = {
+            content = {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 60.dp, start = 16.dp, end = 16.dp)
+                contentPadding = PaddingValues(16.dp)
             ) {
                 items(favorites) { meal ->
                     FavoriteMealItem(meal = meal,
@@ -61,11 +57,12 @@ fun FavoriteMealItem(
     onItemClick: (id: String) -> Unit,
     onRemoveClick: () -> Unit
 ) {
-    Card(
+    Card(colors = CardDefaults.cardColors(MainColor),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable {
+            .clickable
+        {
                 onItemClick(meal.idMeal)
             }
     ) {
@@ -79,7 +76,7 @@ fun FavoriteMealItem(
 
             }
             IconButton(onClick = onRemoveClick) {
-                Icon(
+                Icon (
                     painterResource(id = R.drawable.ic_favorite),
                     contentDescription = "Remove from favorites"
                 )

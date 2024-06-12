@@ -1,4 +1,4 @@
-package com.example.recipefinderapp.favorites
+package com.example.recipefinderapp.favorites.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -23,6 +23,11 @@ class FavoriteDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val favoriteMeal = favoritesRepository.getMealById(id)
             _favorite.value = favoriteMeal
+        }
+    }
+    fun removeFromFavorites(id: String) {
+        viewModelScope.launch {
+            favoritesRepository.removeMealFromFavorites(id)
         }
     }
 }

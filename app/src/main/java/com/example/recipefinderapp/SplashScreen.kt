@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(onTimeout: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(3500)
+        delay(2000)
         onTimeout()
     }
 
@@ -21,9 +21,9 @@ fun SplashScreen(onTimeout: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.recipe_splash),
+            painter = painterResource(id = R.drawable.kitchen),
             contentDescription = "Logo",
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(200.dp)
         )
     }
 }

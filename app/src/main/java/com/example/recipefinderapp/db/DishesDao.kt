@@ -38,4 +38,9 @@ interface DishesDao {
     @Query("SELECT * FROM meal_details WHERE idMeal = :id")
     suspend fun getMealById(id: String) : SmallerMeal
 
+    @Query("SELECT EXISTS (SELECT 1 FROM meal_details WHERE idMeal = :idMeal)")
+    suspend fun isFavorite(idMeal: String): Boolean
+
+
+
 }

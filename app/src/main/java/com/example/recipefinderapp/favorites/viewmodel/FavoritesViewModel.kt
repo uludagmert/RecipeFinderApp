@@ -27,7 +27,7 @@ class FavoritesViewModel @Inject constructor(
     fun removeFavorite(id: String) {
         viewModelScope.launch {
             favoritesRepository.removeMealFromFavorites(id)
-            loadFavorites()
+            _favorites.value = favoritesRepository.getFavoriteMeals()
         }
     }
 }

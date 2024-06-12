@@ -30,6 +30,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,8 @@ import com.example.recipefinderapp.detail.model.MealDetail
 import com.example.recipefinderapp.detail.model.getIngredientsAndMeasures
 import com.example.recipefinderapp.detail.viewmodel.DetailViewModel
 import com.example.recipefinderapp.dishes.model.Meal
+import com.example.recipefinderapp.ui.theme.MainColor
+import com.example.recipefinderapp.ui.theme.SecondaryColor
 import kotlin.math.max
 import kotlin.math.min
 
@@ -73,7 +76,8 @@ fun InstructionText(instructions: String) {
         }
         Button(
             onClick = { showMore = !showMore },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            colors = ButtonDefaults.buttonColors(SecondaryColor)
         ) {
             Text(if (showMore) "Show less" else "Show more")
         }
@@ -96,26 +100,31 @@ fun DetailScreen(
     }
 
     val singleDish by remember { viewModel.meal }
+    val isFavorited by remember { viewModel.isFavorited }
     val scrollState = rememberLazyListState()
 
     singleDish?.let {
-
-            Box {
-                Content(it, scrollState)
-                ParallaxToolbar(it, scrollState, viewModel, navController)
-            }
-
+        Box {
+            Content(it, scrollState)
+            ParallaxToolbar(it, scrollState, isFavorited, viewModel, navController)
+        }
     }
 }
 
+
 @Composable
-fun ParallaxToolbar(meal: MealDetail, scrollState: LazyListState, viewModel: DetailViewModel, navController: NavController) {
+fun ParallaxToolbar(
+    meal: MealDetail,
+    scrollState: LazyListState,
+    isFavorited: Boolean,
+    viewModel: DetailViewModel,
+    navController: NavController
+) {
     val imageHeight = 344.dp
     val maxOffset = with(LocalDensity.current) { imageHeight.roundToPx() }
     val offset = min(scrollState.firstVisibleItemScrollOffset, maxOffset)
     val offsetProgress = max(0f, offset * 3f - 2f * maxOffset) / maxOffset
 
-    var isFavorited by remember { mutableStateOf(false) }
     val favoriteIcon = if (isFavorited) R.drawable.ic_favorite else R.drawable.ic_favorite_unfilled
 
     Box(
@@ -163,8 +172,9 @@ fun ParallaxToolbar(meal: MealDetail, scrollState: LazyListState, viewModel: Det
             ) {
                 Text(
                     text = meal.strMeal,
-                    fontSize = 26.sp,
+                    fontSize = 23.sp,
                     fontWeight = FontWeight.Bold,
+                    color = SecondaryColor,
                     modifier = Modifier
                         .padding(horizontal = (16 + 28 * offsetProgress).dp)
                         .scale(1f - 0.25f * offsetProgress)
@@ -187,13 +197,13 @@ fun ParallaxToolbar(meal: MealDetail, scrollState: LazyListState, viewModel: Det
             CircularButton(
                 iconResource = favoriteIcon,
                 onClick = {
-                    isFavorited = !isFavorited
                     viewModel.saveToFavourites(meal)
                 }
             )
         }
     }
 }
+
 
 @Composable
 fun Ingredients(meal: MealDetail) {
@@ -215,8 +225,12 @@ fun Ingredients(meal: MealDetail) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = ingredient)
-                Text(text = measure)
+                if (ingredient != null) {
+                    Text(text = ingredient)
+                }
+                if (measure != null) {
+                    Text(text = measure)
+                }
             }
         }
     }
@@ -241,7 +255,8 @@ fun Steps(meal: MealDetail) {
         append(meal.strYoutube)
         addStyle(
             style = SpanStyle(
-                color = Color.Blue,
+
+                color = SecondaryColor,
                 textDecoration = TextDecoration.Underline
             ),
             start = 0,
@@ -254,10 +269,7 @@ fun Steps(meal: MealDetail) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        ClickableText(
-            text = annotatedString,
-            onClick = { _ -> uriHandler.openUri(meal.strYoutube) }
-        )
+
         Ingredients(meal)
         Card(
             modifier = Modifier
@@ -269,13 +281,20 @@ fun Steps(meal: MealDetail) {
                 containerColor = MaterialTheme.colorScheme.surface
             )
         ) {
+            ClickableText(
+                text = annotatedString,
+                modifier = Modifier.padding(start = 40.dp),
+                onClick = { _ -> uriHandler.openUri(meal.strYoutube) }
+            )
             Text(
                 text = "Steps",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 20.dp)
             )
             InstructionText(meal.strInstructions)
+
         }
     }
 }
@@ -291,7 +310,7 @@ fun CircularButton(
         onClick = onClick,
         contentPadding = PaddingValues(),
         shape = RoundedCornerShape(4.dp),
-        colors = ButtonDefaults.buttonColors(contentColor = Color.Red, containerColor = color),
+        colors = ButtonDefaults.buttonColors(contentColor = SecondaryColor, containerColor = color),
         elevation = elevation,
         modifier = Modifier
             .width(38.dp)

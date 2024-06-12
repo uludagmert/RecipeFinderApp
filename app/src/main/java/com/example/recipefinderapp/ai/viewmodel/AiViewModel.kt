@@ -1,8 +1,11 @@
-package com.example.recipefinderapp.ai
+package com.example.recipefinderapp.ai.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipefinderapp.ai.model.AiModel
+import com.example.recipefinderapp.ai.data.AiData
+import com.example.recipefinderapp.ai.state.AiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,8 +45,8 @@ class AiViewModel : ViewModel () {
     private fun addPrompt(prompt: String, bitmap: Bitmap?) {
         _chatState.update {
             it.copy(
-                aiList = it.aiList.toMutableList().apply {
-                    add(0, Ai(prompt, bitmap, isFromUser = true))
+                aiModelList = it.aiModelList.toMutableList().apply {
+                    add(0, AiModel(prompt, bitmap, isFromUser = true))
                 },
                 prompt = "",
                 bitmap = null
@@ -56,18 +59,18 @@ class AiViewModel : ViewModel () {
     private fun getResponse(prompt: String) {
         viewModelScope.launch {
             isLoading.value = true
-            val ai = Ai("", null, isFromUser = false)
+            val aiModel = AiModel("", null, isFromUser = false)
             _chatState.update {
                 it.copy(
-                    aiList = it.aiList.toMutableList().apply {
-                        add(0, ai)
+                    aiModelList = it.aiModelList.toMutableList().apply {
+                        add(0, aiModel)
                     }
                 )
             }
             val response = AiData.getResponse(prompt)
             _chatState.update {
                 it.copy(
-                    aiList = it.aiList.toMutableList().apply {
+                    aiModelList = it.aiModelList.toMutableList().apply {
                         this[0] = response
                     }
                 )
@@ -79,11 +82,11 @@ class AiViewModel : ViewModel () {
     private fun getResponseWithImage(prompt: String, bitmap: Bitmap) {
         viewModelScope.launch {
             isLoading.value = true
-            val ai = Ai("", null, isFromUser = false)
+            val aiModel = AiModel("", null, isFromUser = false)
             _chatState.update {
                 it.copy(
-                    aiList = it.aiList.toMutableList().apply {
-                        add(0, ai)
+                    aiModelList = it.aiModelList.toMutableList().apply {
+                        add(0, aiModel)
                     }
                 )
             }
@@ -93,7 +96,7 @@ class AiViewModel : ViewModel () {
 
     fun clearMessages() {
         // Mesajları temizle
-        _chatState.update { it.copy(aiList = emptyList<Ai>().toMutableList()) }
+        _chatState.update { it.copy(aiModelList = emptyList<AiModel>().toMutableList()) }
     }
     sealed class ChatUiEvent {
         data class UpdatePrompt(val newPrompt: String) : ChatUiEvent()

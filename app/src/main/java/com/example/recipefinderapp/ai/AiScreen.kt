@@ -78,6 +78,8 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.recipefinderapp.R
+import com.example.recipefinderapp.ai.state.AiState
+import com.example.recipefinderapp.ai.viewmodel.AiViewModel
 import com.example.recipefinderapp.ui.theme.MainColor
 import com.example.recipefinderapp.ui.theme.SecondaryColor
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -241,9 +243,9 @@ fun AiScreen(
         }
     ) { innerPadding ->
         ChatBackground {
-            LaunchedEffect(chatState.aiList) {
-                if (chatState.aiList.isNotEmpty()) {
-                    listState.animateScrollToItem(chatState.aiList.size - 1)
+            LaunchedEffect(chatState.aiModelList) {
+                if (chatState.aiModelList.isNotEmpty()) {
+                    listState.animateScrollToItem(chatState.aiModelList.size - 1)
                 }
             }
             LazyColumn(
@@ -257,13 +259,13 @@ fun AiScreen(
                 verticalArrangement = Arrangement.Bottom,
                 state = listState
             ) {
-                itemsIndexed(chatState.aiList.reversed()) { index, chat ->
+                itemsIndexed(chatState.aiModelList.reversed()) { index, chat ->
                     if (chat.isFromUser) {
                         UserChatItem(prompt = chat.prompt, bitmap = chat.bitmap)
                     } else {
                         ModelChatItem(
                             response = chat.prompt,
-                            isLoading = isLoading && chatState.aiList.size - 1 == index
+                            isLoading = isLoading && chatState.aiModelList.size - 1 == index
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
