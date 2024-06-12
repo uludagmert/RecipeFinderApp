@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "547664478441",
+    "project_id": "recipe-finder-app-848a0",
+    "storage_bucket": "recipe-finder-app-848a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547664478441:android:79db84a17b83559593b078",
+        "android_client_info": {
+          "package_name": "com.example.recipefinderapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg99hoCzraX-_c08Iv-AI8WlOznGBAu34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

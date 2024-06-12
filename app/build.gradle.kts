@@ -76,8 +76,8 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -88,7 +88,7 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson.v2110)
-    implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
+    implementation(libs.converter.scalars)
 
     // Coil
     implementation(libs.coil.compose)
@@ -101,6 +101,7 @@ dependencies {
 
     // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
+    implementation (libs.androidx.core.ktx)
 
     // OkHttp
     implementation(libs.okHttp)
@@ -108,7 +109,8 @@ dependencies {
     // Hilt
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android.v244)
-    kapt("com.google.dagger:hilt-compiler:2.49")
+    kapt(libs.hilt.compiler)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
