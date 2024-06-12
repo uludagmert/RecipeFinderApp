@@ -2,6 +2,14 @@
 # Recipe Finder App
 
 Recipe Finder App is an Android application designed to provide users with a wide variety of recipes across different categories. The app allows users to browse, view detailed information, and save their favorite recipes for offline access. Additionally, it includes user authentication, an AI-powered question-answering feature, and periodic recipe updates with notifications.
+  
+## Screenshots
+
+![Uygulama Ekran Görüntüsü 1](https://github.com/uludagmert/RecipeFinderApp/blob/master/a.PNG?raw=true)
+
+![Uygulama Ekran Görüntüsü 2](https://github.com/uludagmert/RecipeFinderApp/blob/master/b.PNG?raw=true)
+
+![Uygulama Ekran Görüntüsü 3](https://github.com/uludagmert/RecipeFinderApp/blob/master/c.PNG?raw=true)
 
 
 ## Features
@@ -71,13 +79,5 @@ Contributions are welcome! Please follow these steps to contribute:
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-  
-## Screenshots
-
-![Uygulama Ekran Görüntüsü 1](https://drive.google.com/file/d/17GAy5Xu9AHQtuggsCvNeSCKROXMCUiWF/view?usp=drive_link)
-
-![Uygulama Ekran Görüntüsü 2](https://drive.google.com/file/d/1uroacoO49G50d6IHZL-tu_nYL3t5Ow8q/view?usp=sharing)
-
-![Uygulama Ekran Görüntüsü 3](https://drive.google.com/file/d/1CzSbFu2fAreYnujirvyGxKnA60XqzZWs/view?usp=sharing)
 
   
